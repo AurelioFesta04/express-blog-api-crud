@@ -1,26 +1,24 @@
-const express = require('express');
-const postsRouter = require('./routers/posts');
-const post = require("./data");
-const handleError = require("./middlewares/handleError");
-
-
+// EXPRESS DATA
+const express = require("express");
 const app = express();
 const port = 3000;
+const errorHandler = require("./middlewares/handleErrors");
 
-app.use(express.static("public"));
+// BODY PARSER
+app.use(express.json());
+
+// ROUTER
+const postsRouter = require("./routers/posts-router");
 app.use("/posts", postsRouter);
 
-app.get("/", (req, res) => {
-    res.json("hello")
-})
+// app.get("/", (req, res) => {
+//     res.send("Hello Routers!")
+// })
 
-app.get(`/bacheca`, (req, res) => {
-    res.json ({
-        posts: post,
-        length: post.length
-    })
-});
+// Error Handler
+app.use(errorHandler);
 
+// Server activation
 app.listen(port, () => {
-    console.log(`Server in ascolto sulla porta ${port}`);
-});
+   console.log("Il Server è in ascolto");
+})
