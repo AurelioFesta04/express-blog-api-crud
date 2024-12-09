@@ -1,6 +1,8 @@
 const express = require('express');
 const postsRouter = require('./routers/posts');
 const post = require("./data");
+const handleError = require("./middlewares/handleError");
+
 
 const app = express();
 const port = 3000;

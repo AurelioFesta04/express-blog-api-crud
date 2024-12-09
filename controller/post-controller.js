@@ -1,13 +1,33 @@
-const postList = require("../data");
+const postList = require("../data/posts");
+
+const postList = require("../data/posts");
 
 const index = (req, res) => {
-    res.json(postList);
+    const query = req.query.tags;
+    
+    if (query === undefined) {
+        return res.json({
+            data: postList,
+            total: postList.length
+        });
+    }
+
+    const filterTags = postList.filter(curItem => 
+        curItem.tags.includes(query)
+    );
+
+    return res.json({
+        data: filterTags,
+        total: filterTags.length
+    });
 };
+
+module.exports = { index };
 
 const show = (req, res) => {
     let foundPost = null;
     console.log(postList);
-    
+
     for (let i = 0; i < postList.length; i++) {
         const curElem = postList[i];
         if (curElem.id === parseInt(req.params.id)) {
@@ -35,8 +55,19 @@ const modify = (req, res) => {
 }
 
 const destroy = (req, res) => {
-    const postId = req.params.id;
-    res.json(`Cancellazione del post numero ${postId}`);
+
+    const postid = parseInt(req.params.id);
+
+    const cancel = postList.findIndex((curItem) => curItem.id === postid);
+
+    if (cancel === -1) {
+        res.sendStatus(404);
+
+    } else {
+
+        postList.splice(cancel, 1)
+        res.sendStatus(204);
+    }
 }
 
 module.exports = {

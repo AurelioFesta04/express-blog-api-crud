@@ -2,17 +2,18 @@ const express = require('express');
 const router = express.Router();
 const postsArray = require("../data");
 const controller = require("../controller/post-controller");
+const checkExist = require("../middlewares/checkExist");
 
-router.get("/", controller.index);
+router.get("/", checkExist, controller.index);
 
-router.get("/:id", controller.show)
+router.get("/:id", checkExist, controller.show)
 
-router.post("/", controller.create)
+router.post("/", checkExist, controller.create)
 
-router.put("/", controller.update)
+router.put("/", checkExist, controller.update)
 
-router.patch("/:id", controller.modify)
+router.patch("/:id", checkExist, controller.modify)
 
-router.delete("/:id", controller.destroy)
+router.delete("/:id", checkExist, controller.destroy)
 
 module.exports = router;
